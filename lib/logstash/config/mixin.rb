@@ -110,7 +110,7 @@ module LogStash::Config::Mixin
 
       # Set this key as an instance variable only if it doesn't start with an '@'
       @logger.debug("config #{self.class.name}/@#{key} = #{value.inspect}")
-      instance_variable_set("@#{key}", value)
+      instance_variable_set("@#{key}", value.respond_to?(:gsub)? value.gsub(/\$(\w+)/) { ENV[$1] } : value)
     end
 
     @config = params
